@@ -1,28 +1,61 @@
 import time
 
-input_hour = input("시간입력: ")
-input_minute = input("분입력: ")
+input_hour = input("들어온 시간입력: ")
+input_minute = input("들어온 분입력: ")
+
+input_time = int(input_hour)*60 + int(input_minute)
 
 tm = time.localtime()
-now_hour = tm.tm_hour
+now_hour = int(tm.tm_hour)
+now_min = int(tm.tm_min)
+now_time = now_hour*60 + now_min
 
-if 19 <= now_hour < 24:
-    # 오후 7시부터는 3시간 무료
-    input_time = int(input_hour)*60 + int(input_minute) - 60
-    if input_time < 0:
-        print("시간 등록할 필요가 없습니다")
+if 0 <= now_hour < 19: 
+    result = now_time - input_time - 60
+    if result < 0:
+        print("시간을 등록할 필요가 없습니다.")
+    elif result == 0:
+        print(f"필요한 주차권의 개수는 1개 입니다.")
     else:
-        count_time = input_time//30
-        print(f"등록할 시간권은 {count_time}개 입니다.")
+        ticket_count = result//30 + 1
+        print(f"필요한 주차권의 개수는 {ticket_count}개 입니다.")
 
-elif now_hour < 19:
-    # 오후 7시전에는 1시간 무료
-    input_time = int(input_hour)*60 + int(input_minute) - 60
-    if input_time < 0:
-        print("시간 등록할 필요가 없습니다")
-    else:
-        count_time = input_time//30
-        print(f"등록할 시간권은 {count_time}개 입니다.")
+elif 19<= now_hour < 24:
+    # 7시 이후에 들어온 경우
+    if 19*60 - input_time < 0:
+        result = now_time - input_time - 180
+        if result < 0:
+            print("시간을 등록할 필요가 없습니다.")
+        elif result == 0:
+            print(f"필요한 주차권의 개수는 1개 입니다.")
+        else:
+            ticket_count = result//30 + 1
+            print(f"필요한 주차권의 개수는 {ticket_count}개 입니다.")
 
-#문제해결하기
-#오후6시에 들어온 사람과 오후7시에 들어온 사람은 계산하는법이 다르다?\
+    # 7시 이전에 들어온 경우
+    elif 19*60 - input_time >= 0:
+        first_time_section = 19*60 - input_time
+        second_time_section = now_time - 19*60
+        if second_time_section - 180 < 0:
+            second_time_section = 0
+            result = first_time_section - 60
+            if result < 0:
+                print("시간을 등록할 필요가 없습니다.")
+            elif result == 0:
+                print(f"필요한 주차권의 개수는 1개 입니다.")
+            else:
+                ticket_count = result//30 + 1
+                print(f"필요한 주차권의 개수는 {ticket_count}개 입니다.")
+
+        elif second_time_section - 180 >= 0:
+            second_time_section = second_time_section - 180
+            result = first_time_section - 60 + second_time_section
+            if result < 0:
+                print("시간을 등록할 필요가 없습니다.")
+            elif result == 0:
+                print(f"필요한 주차권의 개수는 1개 입니다.")
+            else:
+                ticket_count = result//30 + 1
+                print(f"필요한 주차권의 개수는 {ticket_count}개 입니다.")
+      
+
