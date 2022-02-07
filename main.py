@@ -1,4 +1,3 @@
-from msilib import datasizemask
 import time
 
 input_hour = input("시간입력: ")
