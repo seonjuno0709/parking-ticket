@@ -25,14 +25,15 @@ elif 19<= now_hour < 24:
     elif 19*60 - input_time >= 0:
         first_time_section = 19*60 - input_time
         second_time_section = now_time - 19*60
-        if second_time_section - 180 < 0:
-            second_time_section = 0
+        if first_time_section - 60 >= 0 and second_time_section - 120 >= 0:
+            result = first_time_section - 60 + second_time_section - 120
+            print(f"필요한 주차권의 개수는 {result//30+1}개 입니다.")
+        elif first_time_section - 60 < 0 and second_time_section -120 < 0:
+            print("주차권을 등록할 필요가 없습니다.")
+        elif first_time_section - 60 >= 0 and second_time_section - 120 < 0:
             result = first_time_section - 60
-            ticket_calculator(result)
-
-        elif second_time_section - 180 >= 0:
-            second_time_section = second_time_section - 180
-            result = first_time_section - 60 + second_time_section
-            ticket_calculator(result)
-      
+            print(f"필요한 주차권의 개수는 {result//30+1}개 입니다.")
+        elif first_time_section - 60 < 0 and second_time_section - 120 >= 0:
+            result = second_time_section - 120
+            print(f"필요한 주차권의 개수는 {result//30+1}개 입니다.")
 
